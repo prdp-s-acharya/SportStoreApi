@@ -48,11 +48,15 @@ namespace SportStoreApi.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("OrderId");
+
                     b.Property<double>("Price");
 
                     b.Property<int>("Size");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Items");
                 });
@@ -77,9 +81,14 @@ namespace SportStoreApi.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("ItemID");
-
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("SportStoreApi.Models.Item", b =>
+                {
+                    b.HasOne("SportStoreApi.Models.Order", "Orders")
+                        .WithMany("Item")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("SportStoreApi.Models.Order", b =>
@@ -87,11 +96,6 @@ namespace SportStoreApi.Migrations
                     b.HasOne("SportStoreApi.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SportStoreApi.Models.Item", "Item")
-                        .WithMany("Orders")
-                        .HasForeignKey("ItemID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

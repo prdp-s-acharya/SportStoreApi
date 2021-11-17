@@ -29,21 +29,46 @@ namespace SportStoreApi.Controllers
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrder([FromRoute] int id)
+        public IActionResult GetOrder([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var orderlist = (from o in _context.Orders
+                              where o.CustomerId == id
+                              select o.OrderNo).ToHashSet();
+            List<Order> orders = new List<Order>();
 
-            if (order == null)
+            foreach(var orderNumber in orderlist)
+            {
+                var specificOrder = _context.Orders.Where<Order>(o=>o.OrderNo == orderNumber);
+
+                var itemids = (from o in specificOrder
+                               select o.ItemID).ToList();
+                List<Item> items = new List<Item>();
+                foreach (var itemid in itemids)
+                {
+                    var item = _context.Items.Find(itemid);
+                    items.Add(item);
+                }
+                Order order = new Order();
+                order.Item = items;
+                order.OrderNo = orderNumber;
+                var orderquary = _context.Orders.Find(orderNumber);
+                order.Id = orderquary.Id;
+                order.OrderDate = orderquary.OrderDate;
+                order.PaymentMode = orderquary.PaymentMode;
+                orders.Add(order);
+            }                 
+
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return Ok(order);
+            return Ok(orders);
         }
 
         // PUT: api/Orders/5

@@ -14,7 +14,7 @@ namespace SportStoreApi.Models
         public DateTime OrderDate { get; set; }
         public string PaymentMode { get; set; }
 
-        public Item Item { get; set; }
+        public ICollection<Item> Item { get; set; }
         public Customer Customer { get; set; }
     }
 }
