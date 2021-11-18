@@ -56,7 +56,7 @@ namespace SportStoreApi.Controllers
                 Order order = new Order();
                 order.Item = items;
                 order.OrderNo = orderNumber;
-                var orderquary = _context.Orders.Find(orderNumber);
+                var orderquary = _context.Orders.Where(o=>o.OrderNo == orderNumber).FirstOrDefault();
                 order.Id = orderquary.Id;
                 order.OrderDate = orderquary.OrderDate;
                 order.PaymentMode = orderquary.PaymentMode;
