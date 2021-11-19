@@ -3,7 +3,6 @@ C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\bin\Debug\netcore
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\bin\Debug\netcoreapp2.1\SportStoreApi.runtimeconfig.dev.json
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\bin\Debug\netcoreapp2.1\SportStoreApi.dll
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\bin\Debug\netcoreapp2.1\SportStoreApi.pdb
-C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.csprojAssemblyReference.cache
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.csproj.CoreCompileInputs.cache
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.RazorAssemblyInfo.cache
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.RazorAssemblyInfo.cs
@@ -12,3 +11,4 @@ C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcore
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.RazorTargetAssemblyInfo.cache
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.dll
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.pdb
+C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.csprojAssemblyReference.cache

@@ -45,14 +45,10 @@ namespace SportStoreApi.Controllers
             {
                 var specificOrder = _context.Orders.Where<Order>(o=>o.OrderNo == orderNumber);
 
-                var itemids = (from o in specificOrder
-                               select o.ItemID).ToList();
-                List<Item> items = new List<Item>();
-                foreach (var itemid in itemids)
-                {
-                    var item = _context.Items.Find(itemid);
-                    items.Add(item);
-                }
+                var items = (from o in specificOrder
+                             join i in _context.Items
+                             on o.ItemID equals i.Id
+                             select i).ToList();
                 Order order = new Order();
                 order.Item = items;
                 order.OrderNo = orderNumber;
@@ -108,16 +104,34 @@ namespace SportStoreApi.Controllers
 
         // POST: api/Orders
         [HttpPost]
-        public async Task<IActionResult> PostOrder([FromBody] Order order)
+        public IActionResult PostOrder([FromBody] Order order)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
+            int maxOrderNo = 0;
+            try
+            {
+                maxOrderNo = (from o in _context.Orders
+                                  where o.CustomerId == order.Customer.Id
+                                  select o.OrderNo).Max();
+            }
+            catch { maxOrderNo = 0; }
+           
+            foreach (var o in order.Item)
+            {
+                Order newOrder = new Order
+                {
+                    CustomerId = order.Customer.Id,
+                    ItemID = o.Id,
+                    OrderNo = maxOrderNo + 1,
+                    OrderDate = order.OrderDate,
+                    PaymentMode = order.PaymentMode
+                };
+                _context.Orders.Add(newOrder);
+                _context.SaveChanges();
+            }
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
