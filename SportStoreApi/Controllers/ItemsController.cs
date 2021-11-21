@@ -45,6 +45,23 @@ namespace SportStoreApi.Controllers
 
             return Ok(item);
         }
+        [HttpGet("{cat}")]
+        public IActionResult GetItemByCatagory([FromRoute] string cat)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var item = _context.Items.Where(i=>i.Catagory.Equals(cat));
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(item);
+        }
 
         // PUT: api/Items/5
         [HttpPut("{id}")]

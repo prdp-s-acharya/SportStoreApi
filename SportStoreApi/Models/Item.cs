@@ -12,6 +12,7 @@ namespace SportStoreApi.Models
         public double Price { get; set; }
         public string Color { get; set; }
         public int Size { get; set; }
+        public string Catagory { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Order Orders { get; set; }
     }

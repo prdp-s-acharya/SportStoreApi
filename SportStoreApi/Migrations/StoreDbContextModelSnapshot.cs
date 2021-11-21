@@ -44,6 +44,8 @@ namespace SportStoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Catagory");
+
                     b.Property<string>("Color");
 
                     b.Property<string>("Name");

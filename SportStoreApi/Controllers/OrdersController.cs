@@ -43,7 +43,7 @@ namespace SportStoreApi.Controllers
 
             foreach(var orderNumber in orderlist)
             {
-                var specificOrder = _context.Orders.Where<Order>(o=>o.OrderNo == orderNumber);
+                var specificOrder = _context.Orders.Where<Order>(o=>o.OrderNo == orderNumber).Where(c=>c.CustomerId == id);
 
                 var items = (from o in specificOrder
                              join i in _context.Items
