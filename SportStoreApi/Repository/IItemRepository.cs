@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace SportStoreApi.Repository
 {
-    interface IItemRepository
+    public interface IItemRepository
     {
         IList<Item> GetItem();
         Item GetItemById(int id);
         Item CreateItem(Item item);
         Item UpdateItem(int id, Item item);
         Item DeleteItem(int id);
+        IList<Item> GetItemByCatagory(string cat);
     }
 }

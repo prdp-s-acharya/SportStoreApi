@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportStoreApi.Models;
+using SportStoreApi.Repository;
 
 namespace SportStoreApi.Controllers
 {
@@ -12,17 +13,16 @@ namespace SportStoreApi.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly StoreDbContext _context;
-
-        public AuthenticationController(StoreDbContext context)
+        private IAuthRepository _repo;
+        public AuthenticationController(IAuthRepository authRepository)
         {
-            _context = context;
+            _repo = authRepository;
         }
 
         [HttpPost]
         public IActionResult Login([FromBody] Customer customer)
         {
-            var user = _context.Customers.Where(u => u.Email == customer.Email).FirstOrDefault();
+            var user = _repo.Login(customer);
             if(user == null)
             {
                 return Ok(user);

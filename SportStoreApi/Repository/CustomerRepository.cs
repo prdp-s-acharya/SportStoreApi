@@ -8,24 +8,37 @@ namespace SportStoreApi.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
+        private readonly StoreDbContext _context;
+
+        public CustomerRepository(StoreDbContext context)
+        {
+            _context = context;
+        }
         public Customer CreateCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+            return customer;
         }
 
         public Customer DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            var customer = _context.Customers.Find(id);
+            _context.Customers.Remove(customer);
+            _context.SaveChanges();
+            return customer;
         }
 
         public Customer EditCustomer(int id, Customer customer)
         {
-            throw new NotImplementedException();
+            _context.Customers.Update(customer);
+            _context.SaveChanges();
+            return customer;
         }
 
         public IList<Customer> GetCustomers()
         {
-            throw new NotImplementedException();
+            return _context.Customers.ToList<Customer>();
         }
     }
 }

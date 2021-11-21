@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SportStoreApi.Repository
 {
-    interface IAuthRepository
+    public interface IAuthRepository
     {
         Customer Login(Customer customer);
     }

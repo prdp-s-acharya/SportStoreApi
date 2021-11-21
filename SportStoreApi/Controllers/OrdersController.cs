@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportStoreApi.Models;
+using SportStoreApi.Repository;
 
 namespace SportStoreApi.Controllers
 {
@@ -13,19 +14,18 @@ namespace SportStoreApi.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly StoreDbContext _context;
-
-        public OrdersController(StoreDbContext context)
+        private IOrderRepository repo;
+        public OrdersController(IOrderRepository repository)
         {
-            _context = context;
+            repo = repository;
         }
 
         // GET: api/Orders
-        [HttpGet]
-        public IEnumerable<Order> GetOrders()
-        {
-            return _context.Orders;
-        }
+        //[HttpGet]
+        //public IEnumerable<Order> GetOrders()
+        //{
+        //    return _context.Orders;
+        //}
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
@@ -36,28 +36,7 @@ namespace SportStoreApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var orderlist = (from o in _context.Orders
-                              where o.CustomerId == id
-                              select o.OrderNo).ToHashSet();
-            List<Order> orders = new List<Order>();
-
-            foreach(var orderNumber in orderlist)
-            {
-                var specificOrder = _context.Orders.Where<Order>(o=>o.OrderNo == orderNumber).Where(c=>c.CustomerId == id);
-
-                var items = (from o in specificOrder
-                             join i in _context.Items
-                             on o.ItemID equals i.Id
-                             select i).ToList();
-                Order order = new Order();
-                order.Item = items;
-                order.OrderNo = orderNumber;
-                var orderquary = _context.Orders.Where(o=>o.OrderNo == orderNumber).FirstOrDefault();
-                order.Id = orderquary.Id;
-                order.OrderDate = orderquary.OrderDate;
-                order.PaymentMode = orderquary.PaymentMode;
-                orders.Add(order);
-            }                 
+            var orders = repo.GetOrder(id);              
 
             if (orders == null)
             {
@@ -68,39 +47,39 @@ namespace SportStoreApi.Controllers
         }
 
         // PUT: api/Orders/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] Order order)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] Order order)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != order.Id)
-            {
-                return BadRequest();
-            }
+        //    if (id != order.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(order).State = EntityState.Modified;
+        //    _context.Entry(order).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!OrderExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Orders
         [HttpPost]
@@ -110,55 +89,31 @@ namespace SportStoreApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            int maxOrderNo = 0;
-            try
-            {
-                maxOrderNo = (from o in _context.Orders
-                                  where o.CustomerId == order.Customer.Id
-                                  select o.OrderNo).Max();
-            }
-            catch { maxOrderNo = 0; }
-           
-            foreach (var o in order.Item)
-            {
-                Order newOrder = new Order
-                {
-                    CustomerId = order.Customer.Id,
-                    ItemID = o.Id,
-                    OrderNo = maxOrderNo + 1,
-                    OrderDate = order.OrderDate,
-                    PaymentMode = order.PaymentMode
-                };
-                _context.Orders.Add(newOrder);
-                _context.SaveChanges();
-            }
+            var neworder = repo.CreateOrder(order);
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
         // DELETE: api/Orders/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteOrder([FromRoute] int id)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+        //    var order = await _context.Orders.FindAsync(id);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+        //    _context.Orders.Remove(order);
+        //    await _context.SaveChangesAsync();
 
-            return Ok(order);
-        }
+        //    return Ok(order);
+        //}
 
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
-        }
+      
     }
 }

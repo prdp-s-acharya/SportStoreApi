@@ -8,9 +8,15 @@ namespace SportStoreApi.Repository
 {
     public class AuthRepository : IAuthRepository
     {
+        private readonly StoreDbContext _context;
+
+        public AuthRepository(StoreDbContext context)
+        {
+            _context = context;
+        }
         public Customer Login(Customer customer)
         {
-            throw new NotImplementedException();
+           return  _context.Customers.Where(u => u.Email == customer.Email).FirstOrDefault();
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SportStoreApi.Repository
 {
-    interface IOrderRepository
+    public interface IOrderRepository
     {
-        Order GetOrder(int id);
+        IList<Order> GetOrder(int id);
         Order CreateOrder(Order order);
     }
 }

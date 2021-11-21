@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportStoreApi.Models;
+using SportStoreApi.Repository;
 
 namespace SportStoreApi.Controllers
 {
@@ -13,30 +14,29 @@ namespace SportStoreApi.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly StoreDbContext _context;
-
-        public ItemsController(StoreDbContext context)
+        private IItemRepository _repo;
+        public ItemsController(IItemRepository itemRepository)
         {
-            _context = context;
+            _repo = itemRepository;
         }
 
         // GET: api/Items
         [HttpGet]
         public IEnumerable<Item> GetItems()
         {
-            return _context.Items;
+            return _repo.GetItem();
         }
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id)
+        public IActionResult GetItem([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id);
+            var item = _repo.GetItemById(id);
 
             if (item == null)
             {
@@ -53,7 +53,7 @@ namespace SportStoreApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = _context.Items.Where(i=>i.Catagory.Equals(cat));
+            var item = _repo.GetItemByCatagory(cat);
 
             if (item == null)
             {
@@ -77,38 +77,21 @@ namespace SportStoreApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(item).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var updatedItem = _repo.UpdateItem(id, item);
 
             return NoContent();
         }
 
         // POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item)
+        public IActionResult PostItem([FromBody] Item item)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Items.Add(item);
-            await _context.SaveChangesAsync();
+            _repo.CreateItem(item);
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
@@ -122,21 +105,9 @@ namespace SportStoreApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
-
+            var item = _repo.DeleteItem(id);
             return Ok(item);
         }
 
-        private bool ItemExists(int id)
-        {
-            return _context.Items.Any(e => e.Id == id);
-        }
     }
 }

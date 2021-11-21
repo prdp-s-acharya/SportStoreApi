@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SportStoreApi.Models;
+using SportStoreApi.Repository;
 
 namespace SportStoreApi
 {
@@ -28,7 +29,7 @@ namespace SportStoreApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<StoreDbContext>(o => o.UseSqlServer(
+            services.AddDbContextPool<StoreDbContext>(o => o.UseSqlServer(
                 Configuration.GetConnectionString("StoreConnectionString")));
             services.AddCors(options =>
             {
@@ -38,6 +39,10 @@ namespace SportStoreApi
                         builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                     });
             });
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

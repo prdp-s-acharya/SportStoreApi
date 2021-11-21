@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SportStoreApi.Repository
 {
-    interface ICustomerRepository
+    public interface ICustomerRepository
     {
         Customer CreateCustomer(Customer customer);
         IList<Customer> GetCustomers();
