@@ -28,7 +28,7 @@ namespace SportStoreApi.Controllers
         }
 
         // GET: api/Items/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}/item")]
         public IActionResult GetItem([FromRoute] int id)
         {
             if (!ModelState.IsValid)

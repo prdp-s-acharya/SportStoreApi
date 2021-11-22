@@ -28,23 +28,23 @@ namespace SportStoreApi.Controllers
         }
 
         // GET: api/Customers/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetCustomer([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpGet("{id}")]
+        public IActionResult GetCustomer([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var customer = await _context.Customers.FindAsync(id);
+            var customer = _repo.GetCustomerById(id);
 
-        //    if (customer == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (customer == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(customer);
-        //}
+            return Ok(customer);
+        }
 
         // PUT: api/Customers/5
         [HttpPut("{id}")]

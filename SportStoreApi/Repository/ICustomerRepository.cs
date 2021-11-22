@@ -12,5 +12,6 @@ namespace SportStoreApi.Repository
         IList<Customer> GetCustomers();
         Customer EditCustomer(int id, Customer customer);
         Customer DeleteCustomer(int id);
+        Customer GetCustomerById(int id);
     }
 }

@@ -11,4 +11,3 @@ C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcore
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.RazorTargetAssemblyInfo.cache
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.dll
 C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.pdb
-C:\Users\minddotnet46\source\repos\SportStoreApi\SportStoreApi\obj\Debug\netcoreapp2.1\SportStoreApi.csprojAssemblyReference.cache

@@ -36,6 +36,11 @@ namespace SportStoreApi.Repository
             return customer;
         }
 
+        public Customer GetCustomerById(int id)
+        {
+            return _context.Customers.Find(id);
+        }
+
         public IList<Customer> GetCustomers()
         {
             return _context.Customers.ToList<Customer>();
